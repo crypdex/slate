@@ -243,7 +243,16 @@
                     <a href="#token-pairs" class="toc-h2 toc-link" data-title="token-pairs">Token pairs</a>
                   </li>
                   <li>
-                    <a href="#orders" class="toc-h2 toc-link" data-title="orders">Orders</a>
+                    <a href="#list-orders" class="toc-h2 toc-link" data-title="list-orders">List Orders</a>
+                  </li>
+                  <li>
+                    <a href="#show-order" class="toc-h2 toc-link" data-title="show-order">Show Order</a>
+                  </li>
+                  <li>
+                    <a href="#get-orderbook" class="toc-h2 toc-link" data-title="get-orderbook">Get Orderbook</a>
+                  </li>
+                  <li>
+                    <a href="#fees" class="toc-h2 toc-link" data-title="fees">Fees</a>
                   </li>
               </ul>
           </li>
@@ -361,7 +370,7 @@
 <!-- ORDERS -->
 
 <!-- ------ -->
-<h2 id='orders'>Orders</h2>
+<h2 id='list-orders'>List Orders</h2>
 <blockquote>
 <p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/signed_orders_schema.ts#L1">See response schema</a></p>
 </blockquote>
@@ -435,6 +444,159 @@
 </tbody></table>
 
 <p>If both makerTokenAddress and takerTokenAddress are specified, returned orders will be sorted by price determined by (takerTokenAmount/makerTokenAmount) in ascending order. By default, orders returned by this endpoint are unsorted.</p>
+
+<p>Retrieves a specific order by orderHash.</p>
+<h2 id='show-order'>Show Order</h2>
+<blockquote>
+<p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/order_schemas.ts#L24">See response schema</a></p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"exchangeContractAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x12459c951127e0c374ff9105dda097662a027093"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"maker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x9e56625509c2f60af937f23b7b532600390e8c8b"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"taker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xa2b31dacf30a9c50ca473337c01d8a201ae33e32"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x323b5d4c32345ced77393b3530b1eed0f346429d"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xef7fff64389b814a946f3e92105513705ca6b990"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"feeRecipient"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xb046140686d052fff581f63f8136cce132e857da"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"200000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expirationUnixTimestampSec"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"salt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"67006738228878699843088602623665307406148487219438534730168799356281242528500"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ecSignature"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"v"</span><span class="p">:</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"r"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x61a3ed31b43c8780e905a260a35faefcc527be7516aa11c0256729b5b351bc33"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x40349190569279751135161d22529dc25add4f6069af05be04cacbda2ace2254"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h3 id='request-3'>Request</h3>
+<p><code>GET http://api.crypdex.io/0x/v0/order/:orderHash</code></p>
+
+<p>Returns HTTP 404 if no order with specified orderHash was found.</p>
+<h2 id='get-orderbook'>Get Orderbook</h2>
+<blockquote>
+<p>Example Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"bids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"exchangeContractAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x12459c951127e0c374ff9105dda097662a027093"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"maker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x9e56625509c2f60af937f23b7b532600390e8c8b"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"taker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xa2b31dacf30a9c50ca473337c01d8a201ae33e32"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"makerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x323b5d4c32345ced77393b3530b1eed0f346429d"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"takerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xef7fff64389b814a946f3e92105513705ca6b990"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"feeRecipient"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xb046140686d052fff581f63f8136cce132e857da"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"makerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"takerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20000000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"makerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"takerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"200000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"expirationUnixTimestampSec"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"salt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"67006738228878699843088602623665307406148487219438534730168799356281242528500"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ecSignature"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"v"</span><span class="p">:</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"r"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x61a3ed31b43c8780e905a260a35faefcc527be7516aa11c0256729b5b351bc33"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x40349190569279751135161d22529dc25add4f6069af05be04cacbda2ace2254"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"asks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"exchangeContractAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x12459c951127e0c374ff9105dda097662a027093"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"maker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x9e56625509c2f60af937f23b7b532600390e8c8b"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"taker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xa2b31dacf30a9c50ca473337c01d8a201ae33e32"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"makerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xef7fff64389b814a946f3e92105513705ca6b990"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"takerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x323b5d4c32345ced77393b3530b1eed0f346429d"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"feeRecipient"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xb046140686d052fff581f63f8136cce132e857da"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"makerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"22000000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"takerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"makerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"takerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"200000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"expirationUnixTimestampSec"</span><span class="p">:</span><span class="w"> </span><span class="s2">"632"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"salt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"54515451557974875123697849345751275676157243756715784155226239582178"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ecSignature"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"v"</span><span class="p">:</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"r"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x61a3ed31b43c8780e905a260a35faefcc527be7516aa11c0256729b5b351bc33"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x40349190569279751135161d22529dc25add4f6069af05be04cacbda2ace2254"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Retrieves the orderbook for a given token pair.</p>
+<h3 id='request-4'>Request</h3>
+<p><code>GET http://api.crypdex.io/0x/v0/orderbook</code></p>
+<h3 id='query-parameters-3'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>baseTokenAddress</strong> [string]</td>
+<td>address of token designated as the baseToken in the currency pair calculation of price (required)</td>
+</tr>
+<tr>
+<td><strong>quoteTokenAddress</strong> [string]</td>
+<td>address of token designated as the quoteToken in the currency pair calculation of price (required)</td>
+</tr>
+</tbody></table>
+<h3 id='response-2'>Response</h3>
+<p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_orderbook_response_schema.ts#L1">See response schema</a></p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>bids</strong></td>
+<td>array of signed orders where takerTokenAddress is equal to baseTokenAddress</td>
+</tr>
+<tr>
+<td><strong>asks</strong></td>
+<td>array of signed orders where makerTokenAddress is equal to baseTokenAddress</td>
+</tr>
+</tbody></table>
+
+<p>Bids will be sorted in descending order by price, and asks will be sorted in ascending order by price. Within the price sorted orders, the orders are further sorted first by total fees, then by expiration in ascending order.</p>
+<h2 id='fees'>Fees</h2>
+<blockquote>
+<p>Example Request</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"exchangeContractAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x12459c951127e0c374ff9105dda097662a027093"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"maker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x9e56625509c2f60af937f23b7b532600390e8c8b"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"taker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x0000000000000000000000000000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x323b5d4c32345ced77393b3530b1eed0f346429d"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xef7fff64389b814a946f3e92105513705ca6b990"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expirationUnixTimestampSec"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"salt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"67006738228878699843088602623665307406148487219438534730168799356281242528500"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Example Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"feeRecipient"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xb046140686d052fff581f63f8136cce132e857da"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"200000000000000"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Given an unsigned order without the fee-related properties, returns the required feeRecipient, makerFee, and takerFee of that order.</p>
+<h3 id='request-5'>Request</h3>
+<p><code>POST http://api.crypdex.io/0x/v0/fees</code></p>
+<h3 id='request-6'>Request</h3>
+<p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_fees_payload_schema.ts#L1">See request schema</a></p>
+
+<p>The request payload is essentially an unsigned order without fee-related properties.</p>
+<h3 id='response-3'>Response</h3>
+<p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_fees_response_schema.ts#L1">See response schema</a></p>
 
       </div>
       <div class="dark-box">
