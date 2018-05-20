@@ -9,7 +9,7 @@ Crypdex supports the 0x's [Standard Relayer API v0](https://github.com/0xProject
 ### Pagination
 
 * Requests that return multiple items respond to the ?page and ?per_page query parameters.
-* Page numbering is 1-indexed, not 0-indexed. Maximum page size is be 100.
+* Page numbering is 1-indexed, not 0-indexed. Maximum page size is 100.
 * These requests include the `token_pairs`, `orders`, and `orderbook` endpoints.
 
 ### Misc
