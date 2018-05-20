@@ -2,6 +2,8 @@
 
 Crypdex supports the 0x's [Standard Relayer API v0](https://github.com/0xProject/standard-relayer-api/blob/master/http/v0.md). Developers may find more detailed information and interactions in our standard REST API.
 
+**The Standard Relayer API is currently deployed on Kovan. Crypdex will deploy to Mainnet shortly.**
+
 ## General Information
 
 ### Pagination
