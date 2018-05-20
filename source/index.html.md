@@ -11,7 +11,7 @@ toc_footers:
 includes:
   - fund-api
   - standard-relayer
-  - errors
+
 
 search: true
 ---
