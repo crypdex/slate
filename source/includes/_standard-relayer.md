@@ -74,7 +74,7 @@ These are token addresses. Returns token pairs that contain tokenA and tokenB (i
 
 <!-- ------ -->
 
-## Orders
+## List Orders
 
 > [See response schema](https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/signed_orders_schema.ts#L1)
 
@@ -125,3 +125,158 @@ All parameters are optional.
 | **feeRecipient**            | returns orders where feeRecipient is feeRecipient address                    |
 
 If both makerTokenAddress and takerTokenAddress are specified, returned orders will be sorted by price determined by (takerTokenAmount/makerTokenAmount) in ascending order. By default, orders returned by this endpoint are unsorted.
+
+Retrieves a specific order by orderHash.
+
+## Show Order
+
+> [See response schema](https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/order_schemas.ts#L24)
+
+```json
+{
+  "exchangeContractAddress": "0x12459c951127e0c374ff9105dda097662a027093",
+  "maker": "0x9e56625509c2f60af937f23b7b532600390e8c8b",
+  "taker": "0xa2b31dacf30a9c50ca473337c01d8a201ae33e32",
+  "makerTokenAddress": "0x323b5d4c32345ced77393b3530b1eed0f346429d",
+  "takerTokenAddress": "0xef7fff64389b814a946f3e92105513705ca6b990",
+  "feeRecipient": "0xb046140686d052fff581f63f8136cce132e857da",
+  "makerTokenAmount": "10000000000000000",
+  "takerTokenAmount": "20000000000000000",
+  "makerFee": "100000000000000",
+  "takerFee": "200000000000000",
+  "expirationUnixTimestampSec": "42",
+  "salt": "67006738228878699843088602623665307406148487219438534730168799356281242528500",
+  "ecSignature": {
+    "v": 27,
+    "r": "0x61a3ed31b43c8780e905a260a35faefcc527be7516aa11c0256729b5b351bc33",
+    "s": "0x40349190569279751135161d22529dc25add4f6069af05be04cacbda2ace2254"
+  }
+}
+```
+
+### Request
+
+`GET http://api.crypdex.io/0x/v0/order/:orderHash`
+
+Returns HTTP 404 if no order with specified orderHash was found.
+
+## Get Orderbook
+
+> Example Response
+
+```json
+{
+  "bids": [
+    {
+      "exchangeContractAddress": "0x12459c951127e0c374ff9105dda097662a027093",
+      "maker": "0x9e56625509c2f60af937f23b7b532600390e8c8b",
+      "taker": "0xa2b31dacf30a9c50ca473337c01d8a201ae33e32",
+      "makerTokenAddress": "0x323b5d4c32345ced77393b3530b1eed0f346429d",
+      "takerTokenAddress": "0xef7fff64389b814a946f3e92105513705ca6b990",
+      "feeRecipient": "0xb046140686d052fff581f63f8136cce132e857da",
+      "makerTokenAmount": "10000000000000000",
+      "takerTokenAmount": "20000000000000000",
+      "makerFee": "100000000000000",
+      "takerFee": "200000000000000",
+      "expirationUnixTimestampSec": "42",
+      "salt": "67006738228878699843088602623665307406148487219438534730168799356281242528500",
+      "ecSignature": {
+        "v": 27,
+        "r": "0x61a3ed31b43c8780e905a260a35faefcc527be7516aa11c0256729b5b351bc33",
+        "s": "0x40349190569279751135161d22529dc25add4f6069af05be04cacbda2ace2254"
+      }
+    },
+    ...
+  ],
+  "asks": [
+    {
+      "exchangeContractAddress": "0x12459c951127e0c374ff9105dda097662a027093",
+      "maker": "0x9e56625509c2f60af937f23b7b532600390e8c8b",
+      "taker": "0xa2b31dacf30a9c50ca473337c01d8a201ae33e32",
+      "makerTokenAddress": "0xef7fff64389b814a946f3e92105513705ca6b990",
+      "takerTokenAddress": "0x323b5d4c32345ced77393b3530b1eed0f346429d",
+      "feeRecipient": "0xb046140686d052fff581f63f8136cce132e857da",
+      "makerTokenAmount": "22000000000000000",
+      "takerTokenAmount": "10000000000000000",
+      "makerFee": "100000000000000",
+      "takerFee": "200000000000000",
+      "expirationUnixTimestampSec": "632",
+      "salt": "54515451557974875123697849345751275676157243756715784155226239582178",
+      "ecSignature": {
+        "v": 27,
+        "r": "0x61a3ed31b43c8780e905a260a35faefcc527be7516aa11c0256729b5b351bc33",
+        "s": "0x40349190569279751135161d22529dc25add4f6069af05be04cacbda2ace2254"
+      }
+    },
+    ...
+  ]
+}
+```
+
+Retrieves the orderbook for a given token pair.
+
+### Request
+
+`GET http://api.crypdex.io/0x/v0/orderbook`
+
+### Query Parameters
+
+| Parameters                     | Description                                                                                        |
+| ------------------------------ | -------------------------------------------------------------------------------------------------- |
+| **baseTokenAddress** [string]  | address of token designated as the baseToken in the currency pair calculation of price (required)  |
+| **quoteTokenAddress** [string] | address of token designated as the quoteToken in the currency pair calculation of price (required) |
+
+### Response
+
+[See response schema](https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_orderbook_response_schema.ts#L1)
+
+| Key      | Description                                                                 |
+| -------- | --------------------------------------------------------------------------- |
+| **bids** | array of signed orders where takerTokenAddress is equal to baseTokenAddress |
+| **asks** | array of signed orders where makerTokenAddress is equal to baseTokenAddress |
+
+Bids will be sorted in descending order by price, and asks will be sorted in ascending order by price. Within the price sorted orders, the orders are further sorted first by total fees, then by expiration in ascending order.
+
+## Fees
+
+> Example Request
+
+```json
+{
+  "exchangeContractAddress": "0x12459c951127e0c374ff9105dda097662a027093",
+  "maker": "0x9e56625509c2f60af937f23b7b532600390e8c8b",
+  "taker": "0x0000000000000000000000000000000000000000",
+  "makerTokenAddress": "0x323b5d4c32345ced77393b3530b1eed0f346429d",
+  "takerTokenAddress": "0xef7fff64389b814a946f3e92105513705ca6b990",
+  "makerTokenAmount": "10000000000000000",
+  "takerTokenAmount": "20000000000000000",
+  "expirationUnixTimestampSec": "42",
+  "salt": "67006738228878699843088602623665307406148487219438534730168799356281242528500"
+}
+```
+
+> Example Response
+
+```json
+{
+  "feeRecipient": "0xb046140686d052fff581f63f8136cce132e857da",
+  "makerFee": "100000000000000",
+  "takerFee": "200000000000000"
+}
+```
+
+Given an unsigned order without the fee-related properties, returns the required feeRecipient, makerFee, and takerFee of that order.
+
+### Request
+
+`POST http://api.crypdex.io/0x/v0/fees`
+
+### Request
+
+[See request schema](https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_fees_payload_schema.ts#L1)
+
+The request payload is essentially an unsigned order without fee-related properties.
+
+### Response
+
+[See response schema](https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_fees_response_schema.ts#L1)
