@@ -227,11 +227,6 @@
           </li>
           <li>
             <a href="#fund-api" class="toc-h1 toc-link" data-title="fund-api">Fund API</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#general-information" class="toc-h2 toc-link" data-title="general-information">General Information</a>
-                  </li>
-              </ul>
           </li>
           <li>
             <a href="#0x-standard-relayer-api" class="toc-h1 toc-link" data-title="0x-standard-relayer-api">0x Standard Relayer API</a>
@@ -240,7 +235,7 @@
                     <a href="#general-information" class="toc-h2 toc-link" data-title="general-information">General Information</a>
                   </li>
                   <li>
-                    <a href="#token-pairs" class="toc-h2 toc-link" data-title="token-pairs">Token pairs</a>
+                    <a href="#list-token-pairs" class="toc-h2 toc-link" data-title="list-token-pairs">List Token Pairs</a>
                   </li>
                   <li>
                     <a href="#list-orders" class="toc-h2 toc-link" data-title="list-orders">List Orders</a>
@@ -249,10 +244,13 @@
                     <a href="#show-order" class="toc-h2 toc-link" data-title="show-order">Show Order</a>
                   </li>
                   <li>
-                    <a href="#get-orderbook" class="toc-h2 toc-link" data-title="get-orderbook">Get Orderbook</a>
+                    <a href="#show-orderbook" class="toc-h2 toc-link" data-title="show-orderbook">Show Orderbook</a>
                   </li>
                   <li>
-                    <a href="#fees" class="toc-h2 toc-link" data-title="fees">Fees</a>
+                    <a href="#calculate-fees" class="toc-h2 toc-link" data-title="calculate-fees">Calculate Fees</a>
+                  </li>
+                  <li>
+                    <a href="#create-order" class="toc-h2 toc-link" data-title="create-order">Create Order</a>
                   </li>
               </ul>
           </li>
@@ -269,19 +267,9 @@
 <h1 id='authentication'>Authentication</h1>
 <p>Authentication varies per service. Please reference the documentation for the API in question.</p>
 <h1 id='fund-api'>Fund API</h1>
-<p>Crypdex</p>
-<h2 id='general-information'>General Information</h2><h3 id='pagination'>Pagination</h3>
-<ul>
-<li>Requests that return multiple items respond to the ?page and ?per_page query parameters.</li>
-<li>Page numbering is 1-indexed, not 0-indexed. Maximum page size is be 100.</li>
-<li>These requests include the <code>token_pairs</code>, <code>orders</code>, and <code>orderbook</code> endpoints.</li>
-</ul>
-<h3 id='misc'>Misc</h3>
-<ul>
-<li>All requests and responses are of application/json content type</li>
-<li>All token amounts are sent in amounts of the smallest level of precision (base units). (e.g if a token has 18 decimal places, selling 1 token would show up as selling &#39;1000000000000000000&#39; units by this API).</li>
-<li>All addresses are sent as lower-case (non-checksummed) Ethereum addresses with the 0x prefix.</li>
-</ul>
+<p>Crypdex&#39;s cryptoasset funds are accessible via API. If you are an accredited investor with an account, you may programmatically access it here.</p>
+
+<p>More coming soon.</p>
 <h1 id='0x-standard-relayer-api'>0x Standard Relayer API</h1>
 <p>Crypdex supports the 0x&#39;s <a href="https://github.com/0xProject/standard-relayer-api/blob/master/http/v0.md">Standard Relayer API v0</a>. Developers may find more detailed information and interactions in our standard REST API.</p>
 <h2 id='general-information'>General Information</h2><h3 id='pagination'>Pagination</h3>
@@ -296,7 +284,7 @@
 <li>All token amounts are sent in amounts of the smallest level of precision (base units). (e.g if a token has 18 decimal places, selling 1 token would show up as selling &#39;1000000000000000000&#39; units by this API).</li>
 <li>All addresses are sent as lower-case (non-checksummed) Ethereum addresses with the 0x prefix.</li>
 </ul>
-<h2 id='token-pairs'>Token pairs</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.crypdex.io/0x/v0/token_pairs"</span>
+<h2 id='list-token-pairs'>List Token Pairs</h2><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://api.crypdex.io/0x/v0/token_pairs"</span>
 </code></pre>
 <blockquote>
 <p>Example Response</p>
@@ -473,7 +461,7 @@
 <p><code>GET http://api.crypdex.io/0x/v0/order/:orderHash</code></p>
 
 <p>Returns HTTP 404 if no order with specified orderHash was found.</p>
-<h2 id='get-orderbook'>Get Orderbook</h2>
+<h2 id='show-orderbook'>Show Orderbook</h2>
 <blockquote>
 <p>Example Response</p>
 </blockquote>
@@ -563,7 +551,7 @@
 </tbody></table>
 
 <p>Bids will be sorted in descending order by price, and asks will be sorted in ascending order by price. Within the price sorted orders, the orders are further sorted first by total fees, then by expiration in ascending order.</p>
-<h2 id='fees'>Fees</h2>
+<h2 id='calculate-fees'>Calculate Fees</h2>
 <blockquote>
 <p>Example Request</p>
 </blockquote>
@@ -591,12 +579,122 @@
 <p>Given an unsigned order without the fee-related properties, returns the required feeRecipient, makerFee, and takerFee of that order.</p>
 <h3 id='request-5'>Request</h3>
 <p><code>POST http://api.crypdex.io/0x/v0/fees</code></p>
-<h3 id='request-6'>Request</h3>
+
 <p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_fees_payload_schema.ts#L1">See request schema</a></p>
 
 <p>The request payload is essentially an unsigned order without fee-related properties.</p>
 <h3 id='response-3'>Response</h3>
 <p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_fees_response_schema.ts#L1">See response schema</a></p>
+<h2 id='create-order'>Create Order</h2>
+<blockquote>
+<p>Example Request</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"exchangeContractAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x12459c951127e0c374ff9105dda097662a027093"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"maker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x9e56625509c2f60af937f23b7b532600390e8c8b"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"taker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xa2b31dacf30a9c50ca473337c01d8a201ae33e32"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x323b5d4c32345ced77393b3530b1eed0f346429d"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerTokenAddress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xef7fff64389b814a946f3e92105513705ca6b990"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"feeRecipient"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0xb046140686d052fff581f63f8136cce132e857da"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerTokenAmount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"makerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"takerFee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"200000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"expirationUnixTimestampSec"</span><span class="p">:</span><span class="w"> </span><span class="s2">"42"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"salt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"67006738228878699843088602623665307406148487219438534730168799356281242528500"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"ecSignature"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"v"</span><span class="p">:</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"r"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x61a3ed31b43c8780e905a260a35faefcc527be7516aa11c0256729b5b351bc33"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x40349190569279751135161d22529dc25add4f6069af05be04cacbda2ace2254"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Example Error Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Validation failed"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"validationErrors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"field"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">1002</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Invalid address"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Submit a signed order to the relayer.</p>
+<h3 id='request-6'>Request</h3>
+<p><code>POST http://api.crypdex.io/0x/v0/order</code></p>
+
+<p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/order_schemas.ts#L24">See request schema</a></p>
+<h3 id='response-4'>Response</h3><h4 id='success-response'>Success Response</h4>
+<p>Returns HTTP 201 upon success.</p>
+<h4 id='error-response'>Error Response</h4>
+<p>Error response will be sent with a non-2xx HTTP status code</p>
+
+<p><a href="https://github.com/0xProject/0x.js/blob/development/packages/json-schemas/schemas/relayer_api_error_response_schema.ts#L1">See error response schema</a></p>
+<h3 id='error-codes'>Error Codes</h3><h4 id='general-error-codes'>General Error Codes</h4>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Reason</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>100</td>
+<td>Validation Failed</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Malformed JSON</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Order submission disabled</td>
+</tr>
+<tr>
+<td>103</td>
+<td>Throttled</td>
+</tr>
+</tbody></table>
+<h4 id='validation-error-codes'>Validation Error Codes</h4>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Reason</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>1000</td>
+<td>Required field</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>Incorrect format</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>Invalid address</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>Address not supported</td>
+</tr>
+<tr>
+<td>1004</td>
+<td>Value out of range</td>
+</tr>
+<tr>
+<td>1005</td>
+<td>Invalid ECDSA or Hash</td>
+</tr>
+<tr>
+<td>1006</td>
+<td>Unsupported option</td>
+</tr>
+</tbody></table>
 
       </div>
       <div class="dark-box">
